@@ -1,0 +1,19 @@
+{
+  "name": "mondo-pebble-webhook",
+  "version": "1.0.0",
+  "description": "Wiring up the Mondo tranasction webhook to the Pebble Timeline API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
+  },
+  "author": "Chris Price",
+  "license": "ISC",
+  "repository": "https://github.com/chrisprice/mondo-pebble-webhook.git",
+  "dependencies": {
+    "@smallwins/validate": "^4.0.1",
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "pebble-api": "^0.2.2"
+  }
+}

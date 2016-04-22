@@ -1,5 +1,6 @@
 var validate = require('@smallwins/validate')
-var lambda = require('@smallwins/lambda')
+var express = require('express')
+var bodyParser = require('body-parser')
 var Timeline = require('pebble-api').Timeline
 
 function valid (event, callback) {
@@ -50,4 +51,30 @@ function fn (event, callback) {
   })
 }
 
-exports.handler = lambda(valid, fn)
+var app = express()
+
+app.use(bodyParser.json())
+
+app.use('/', function (req, res, next) {
+  valid(req, function (err) {
+    console.log('valid', err)
+    if (err) {
+      res.sendStatus(400)
+    } else {
+      next()
+    }
+  })
+})
+
+app.post('/', function (req, res) {
+  fn(req, function (err) {
+    console.log('fn', err)
+    if (err) {
+      res.sendStatus(500)
+    } else {
+      res.sendStatus(200)
+    }
+  })
+})
+
+app.listen(80)

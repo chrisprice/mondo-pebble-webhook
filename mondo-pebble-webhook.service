@@ -1,0 +1,15 @@
+[Unit]
+Description=mondo-pebble-webhook
+After=docker.service
+Requires=docker.service
+
+[Service]
+RestartSec=30s
+ExecStartPre=-/usr/bin/docker kill mondo-pebble-webhook
+ExecStartPre=-/usr/bin/docker rm mondo-pebble-webhook
+ExecStartPre=/usr/bin/docker pull chrisprice/mondo-pebble-webhook
+ExecStart=/usr/bin/docker run --name mondo-pebble-webhook -p 80:80 chrisprice/mondo-pebble-webhook
+ExecStop=/usr/bin/docker stop mondo-pebble-webhook
+
+[Install]
+WantedBy=multi-user.target
