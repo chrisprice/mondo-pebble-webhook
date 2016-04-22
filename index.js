@@ -1,6 +1,7 @@
 var validate = require('@smallwins/validate')
 var express = require('express')
 var bodyParser = require('body-parser')
+var LEX = require('letsencrypt-express')
 var Timeline = require('pebble-api').Timeline
 
 function valid (event, callback) {
@@ -77,4 +78,20 @@ app.post('/', function (req, res) {
   })
 })
 
-app.listen(80)
+var lex = LEX.create({
+ approveRegistration: function (hostname, cb) {
+    console.log('approveRegistration', hostname)
+    cb(
+      process.uptime() > 60 || !hostname.match(/\.chrisprice\.io$/),
+      {
+        domains: [hostname],
+        email: 'price.c@gmail.com',
+        agreeTos: true
+      }
+    )
+  }
+})
+
+lex.onRequest = app
+
+lex.listen([80], [443])
